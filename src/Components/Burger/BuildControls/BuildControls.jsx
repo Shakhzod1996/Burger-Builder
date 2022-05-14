@@ -9,47 +9,21 @@ const controls = [
   { label: "Cheese", type: "cheese" },
 ];
 
-export default function BuildControls({
-  baconPlusHandler,
-  saladPlusHandler,
-  meatPlusHandler,
-  cheesePlusHandler,
-  saladMinusHandler,
-  cheeseMinusHandler,
-  meatMinusHandler,
-  baconMinusHandler,
-
-}) {
+export default function BuildControls(props) {
   return (
     <div className="BuildControls">
-      <BuildControl
-        key={controls[0].label}
-        label={controls[0].label}
-        saladPlusHandler={saladPlusHandler}
-        saladMinusHandler={saladMinusHandler}
-      />
+      <p className="">Current Price : <strong>{props.price.toFixed(2)}$</strong></p>
+      {controls.map((item, i) => (
+        <BuildControl
+          key={item.label + i}
+          label={item.label}
+          added={() => props.ingredientAdded(item.type)}
+          remove={() => props.ingredientRemove(item.type)}
+          disabled={props.disabledInfo[item.type]}
+        />
+      ))}
 
-      <BuildControl
-        key={controls[1].label}
-        label={controls[1].label}
-        saladPlusHandler={baconPlusHandler}
-        saladMinusHandler={baconMinusHandler}
-      />
-
-      <BuildControl
-        key={controls[2].label}
-        label={controls[2].label}
-        saladPlusHandler={meatPlusHandler}
-        saladMinusHandler={meatMinusHandler}
-
-      />
-
-      <BuildControl
-        key={controls[3].label}
-        label={controls[3].label}
-        saladPlusHandler={cheesePlusHandler}
-        saladMinusHandler={cheeseMinusHandler}
-      />
+      <button className="OrderButton" onClick={props.ordered} disabled={!props.purchasable}>ORDER NOW</button>
     </div>
   );
 }
